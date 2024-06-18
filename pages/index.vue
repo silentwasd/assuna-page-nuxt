@@ -12,6 +12,8 @@
 
         <div class="overflow-auto w-full h-full">
             <div class="container mx-auto max-w-4xl">
+                <LangBlock class="second-bg md:rounded-2xl p-10 md:my-10"/>
+
                 <HelloBlock class="second-bg md:rounded-2xl p-10 md:my-10"/>
 
                 <RadioBlock class="second-bg md:rounded-2xl p-10 md:my-10"/>

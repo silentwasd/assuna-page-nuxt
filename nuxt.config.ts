@@ -1,7 +1,7 @@
 export default defineNuxtConfig({
     devtools: {enabled: true},
 
-    modules: ['nuxt-icon'],
+    modules: ['nuxt-icon', '@nuxtjs/i18n'],
 
     postcss : {
         plugins: {
@@ -10,5 +10,13 @@ export default defineNuxtConfig({
         },
     },
 
-    ssr: false
+    ssr: false,
+
+    i18n: {
+        locales: ["en-US", "ru-RU", "ja-JP"],
+        defaultLocale: "ru-RU",
+        detectBrowserLanguage: false,
+        vueI18n: "./i18n.config.ts",
+        strategy: 'no_prefix'
+    }
 })
