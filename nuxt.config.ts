@@ -10,7 +10,7 @@ export default defineNuxtConfig({
         },
     },
 
-    ssr: false,
+    ssr: true,
 
     i18n: {
         locales: ["en-US", "ru-RU", "ja-JP"],
