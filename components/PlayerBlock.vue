@@ -13,12 +13,13 @@ function switchLang(on: string) {
 <template>
     <div class="grid grid-cols-3 gap-5">
         <h1 class="text-4xl text-center title2 mb-6">тест</h1>
-
-
                 <button class="Test-block px-3 py-2 rounded-xl text-white text-lg"
                 :class="{'bg-pink-950': locale === 'en-US'}"
                 @click="switchLang('en-US')">English</button>
+
+                
     </div>
+    
 </template>
 
 <style scoped>
@@ -65,4 +66,6 @@ function switchLang(on: string) {
 }
 
 
+
 </style>
+
