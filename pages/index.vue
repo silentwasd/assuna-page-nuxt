@@ -45,7 +45,7 @@ import PlayerBlock from '~/components/PlayerBlock.vue';
     animation: 10s rotate linear infinite;
     border: 0.5vmin solid;
     --angle: 0deg;
-    border-image: conic-gradient(from var(--angle), red, yellow, lime, aqua, blue, magenta, red) 1;
+    border-image: conic-gradient(from var(--angle), #1b1641, #3c249c, #832ad0, #47ffbf, #35dece, #2d9abb,#2de2e6,#035ee8,#f6019d,#d40078,#9700cc) 1;
 }
 
 @keyframes rotate {
