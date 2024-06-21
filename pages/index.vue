@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import PlayerBlock from '~/components/PlayerBlock.vue';
+
 
 </script>
 
@@ -19,6 +21,9 @@
                 <RadioBlock class="second-bg md:rounded-2xl p-10 md:my-10"/>
 
                 <SocialBlock class="second-bg md:rounded-2xl p-10 md:mb-10"/>
+
+                <PlayerBlock class="second-bg  md:rounded-2xl p-10 md:mb-10"/>
+
             </div>
         </div>
     </div>
@@ -32,48 +37,26 @@
     background-position: center;
     background-size: cover;
 
-    animation-composition: add;
-
-    animation: 1s linear 0s infinite alternate ping-pong,
-    2s linear 0s infinite alternate rotate,
-    1s linear 0s infinite alternate-reverse zoom;
 }
 
 .second-bg {
-    background-color: rgba(255, 255, 255, .8);
-}
-
-@keyframes ping-pong {
-    0% {
-        filter: brightness(50%) hue-rotate(-360deg);
-    }
-
-    100% {
-        filter: brightness(100%) hue-rotate(360deg);
-    }
+    background-color: rgba(255, 255, 255, .8); 
+    clip-path: inset(0px round 10px);
+    animation: 10s rotate linear infinite;
+    border: 0.5vmin solid;
+    --angle: 0deg;
+    border-image: conic-gradient(from var(--angle), red, yellow, lime, aqua, blue, magenta, red) 1;
 }
 
 @keyframes rotate {
-    0% {
-        transform: rotate(-5deg);
-    }
-
-    50% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(5deg);
-    }
+	to {
+		--angle: 360deg;
+	}
 }
 
-@keyframes zoom {
-    0% {
-        transform: scale(100%);
-    }
-
-    100% {
-        transform: scale(150%);
-    }
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
 }
 </style>
