@@ -5,7 +5,9 @@
 
 <template>
     <div>
-        <h1 class="text-4xl text-center title2 mb-6">Поболтаем?</h1>
+        <h1 class="text-4xl text-center title2 mb-6"><p>
+                {{ $t("social_title") }}
+            </p></h1>
 
         <div class="grid md:grid-cols-3 text-center">
             <div class="mb-5 md:mb-0">

@@ -3,6 +3,9 @@ export default defineI18nConfig(() => ({
 
     messages: {
         "en-US": {
+            radio_title: 'Radio',
+            social_title: 'Social',
+
             hello_1: "Hi! I'm a funny vixen. I am already 900 years old, but at heart I am young and young. And I also love to chat and cuddle! Shall we hug?",
             hello_2: "Foxes can do a lot of things, but each fox is not like the others. We may differ" +
                 "color, eyes, ears and even a tail! Here I have a long and fluffy one. I love him very much." +
@@ -19,6 +22,10 @@ export default defineI18nConfig(() => ({
         },
 
         "ru-RU": {
+            radio_title: 'Радио',
+            social_title: 'Социальные',
+
+
             hello_1: "Привет! Я весёлая лисичка. Мне уже 900 лет, но в душе я молода и юна. А ещё я люблю общаться и обниматься! Обнимемся?",
             hello_2: "Лисы умеют много чего, но каждая лиса не похожа на таких же других. Мы можем отличаться" +
             "окрасом, глазами, ушами и даже хвостом! Вот у меня длинный и пушистый. Я его очень люблю" +
@@ -35,6 +42,11 @@ export default defineI18nConfig(() => ({
         },
 
         "ja-JP": {
+            radio_title: '無線',
+            social_title: '社交',
+
+
+
             hello_1: "こんにちは! 私は面白いビクセンです。 私はすでに900歳ですが、心の中で私は若くて若いです。 そして、私はまた、チャットや抱きしめるのが大好き！ ハグしましょうか？",
             hello_2: "キツネは多くのことをすることができますが、それぞれのキツネは他のキツネのようではありません。 私たちは異なる場合があります" +
             "色、目、耳、さらには尾！ ここで私は長くてふわふわしたものを持っています。 私は彼をとても愛しています。" +

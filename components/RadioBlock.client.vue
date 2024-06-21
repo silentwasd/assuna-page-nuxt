@@ -84,7 +84,7 @@ function renderFrame() {
 
 <template>
     <div>
-        <h1 class="text-4xl text-center title2 mb-6">Радио</h1>
+        <h1 class="text-4xl text-center title2 mb-6">{{ $t('radio_title') }}</h1>
 
         <div class="flex flex-row gap-5">
             <button class="text-pink-800 hover:text-pink-600" @click="play">
