@@ -18,5 +18,11 @@ export default defineNuxtConfig({
         detectBrowserLanguage: false,
         vueI18n: "./i18n.config.ts",
         strategy: 'no_prefix'
+    },
+
+    nitro: {
+        prerender: {
+            ignore: ['/']
+        }
     }
 })
