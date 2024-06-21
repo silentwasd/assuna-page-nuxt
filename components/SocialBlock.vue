@@ -1,12 +1,11 @@
 <script setup lang="ts">
-
-
+const {t} = useTranslate();
 </script>
 
 <template>
     <div>
         <h1 class="text-4xl text-center title2 mb-6"><p>
-                {{ $t("social_title") }}
+                {{ t("social_title") }}
             </p></h1>
 
         <div class="grid md:grid-cols-3 text-center">

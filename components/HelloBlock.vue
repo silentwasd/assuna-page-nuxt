@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import {useTranslate} from "~/composables/translate";
 
+const {t} = useTranslate();
 </script>
 
 <template>
@@ -11,23 +13,23 @@
                  class="h-full object-cover md:h-64 float-start mb-5 md:me-5 md:mb-2"/>
 
             <p>
-                {{ $t("hello_1") }}
+                {{ t("hello_1") }}
             </p>
 
             <p class="mt-5">
-                {{ $t("hello_2") }}
+                {{ t("hello_2") }}
             </p>
 
             <p class="mt-5">
-                {{ $t("hello_3") }}
+                {{ t("hello_3") }}
             </p>
 
             <p class="mt-5">
-                {{ $t("hello_4") }}
+                {{ t("hello_4") }}
             </p>
 
             <p class="mt-5">
-                {{ $t("hello_5") }}
+                {{ t("hello_5") }}
             </p>
         </div>
     </div>
