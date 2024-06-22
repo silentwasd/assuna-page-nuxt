@@ -12,5 +12,13 @@ export default defineNuxtConfig({
     detectBrowserLanguage: false,
     vueI18n: "./i18n.config.ts",
     strategy: 'no_prefix'
+  },
+
+  app: {
+    head: {
+      script: [{
+        src: '/js/metrics.js'
+      }]
+    }
   }
 })
