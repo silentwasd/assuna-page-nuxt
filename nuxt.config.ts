@@ -1,22 +1,16 @@
+// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-    devtools: {enabled: true},
+  devtools: { enabled: true },
 
-    modules: ['nuxt-icon', '@nuxtjs/i18n'],
+  modules: ["@nuxtjs/tailwindcss", "@nuxtjs/i18n"],
 
-    postcss : {
-        plugins: {
-            tailwindcss : {},
-            autoprefixer: {},
-        },
-    },
+  ssr: false,
 
-    ssr: true,
-
-    i18n: {
-        locales: ["en-US", "ru-RU", "ja-JP"],
-        defaultLocale: "ru-RU",
-        detectBrowserLanguage: false,
-        vueI18n: "./i18n.config.ts",
-        strategy: 'no_prefix'
-    }
+  i18n: {
+    locales: ["en-US", "ru-RU", "ja-JP"],
+    defaultLocale: "ru-RU",
+    detectBrowserLanguage: false,
+    vueI18n: "./i18n.config.ts",
+    strategy: 'no_prefix'
+  }
 })
