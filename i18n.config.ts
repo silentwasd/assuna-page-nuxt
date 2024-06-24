@@ -5,6 +5,7 @@ export default defineI18nConfig(() => ({
         "en-US": {
             radio_title: 'Radio',
             social_title: 'Let\'s talk!',
+            radio_music: 'Now Playing',
 
             hello_1: "Hi! I'm a funny vixen. I am already 900 years old, but at heart I am young and young. And I also love to chat and cuddle! Shall we hug?",
             hello_2: "Foxes can do a lot of things, but each fox is not like the others. We may differ" +
@@ -24,6 +25,7 @@ export default defineI18nConfig(() => ({
         "ru-RU": {
             radio_title: 'Радио',
             social_title: 'Пообщаемся?',
+            radio_music: 'Сейчас играет',
 
 
             hello_1: "Привет! Я весёлая лисичка. Мне уже 900 лет, но в душе я молода и юна. А ещё я люблю общаться и обниматься! Обнимемся?",
@@ -44,6 +46,7 @@ export default defineI18nConfig(() => ({
         "ja-JP": {
             radio_title: '無線',
             social_title: '話そう',
+            radio_music: '再生中',
 
 
 

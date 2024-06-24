@@ -103,7 +103,7 @@ function renderFrame() {
 <template>
     <div>
         <div class="flex flex-col justify-center items-center font-oswald mb-5">
-            <span class="font-semibold text-xl">Сейчас играет</span>
+            <span class="font-semibold text-xl">{{ $t('radio_music') }}</span>
             <span class="text-2xl text">{{ artist }} - {{ title }}</span>
         </div>
 
