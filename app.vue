@@ -9,6 +9,7 @@
 
         <BackgroundFixed class="bg-fuchsia-300"/>
         <BackgroundVhsScanLines/>
+        <BackgroundOldTv/>
 
         <ScrollbarSolidPink/>
 
