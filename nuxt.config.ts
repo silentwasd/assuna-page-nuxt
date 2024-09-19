@@ -1,9 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-
-  modules: ["@nuxtjs/tailwindcss", "@nuxtjs/i18n"],
-
+  modules: ["@nuxtjs/i18n", "@nuxt/ui"],
   ssr: false,
 
   i18n: {
@@ -20,5 +18,7 @@ export default defineNuxtConfig({
         src: '/js/metrics.js'
       }]
     }
-  }
+  },
+
+  compatibilityDate: "2024-09-19",
 })
