@@ -10,9 +10,21 @@ This is a Nuxt 3 SPA (Single Page Application) featuring a personal page for "As
 
 - **Framework**: Nuxt 3 with SSR disabled (`ssr: false`)
 - **Styling**: Tailwind CSS with custom Google Fonts (Amaranth, Caveat, Dela Gothic One, Oswald, Josefin Sans)
+- **Visual Theme**: Retro/cyberpunk aesthetic with VHS scanlines, RGB borders, and neon colors
 - **Internationalization**: @nuxtjs/i18n with 3 locales (en-US, ru-RU, ja-JP), default is ru-RU
 - **Audio**: @davland7/rplayer for streaming radio functionality
 - **Analytics**: Yandex Metrica integration
+
+## Visual Style & Theming
+
+The project features a distinctive **retro-cyberpunk aesthetic**:
+
+- **Animated RGB Borders**: Rotating conic gradient borders with vibrant colors (#1b1641 to #9700cc)
+- **VHS Scanlines**: Flickering horizontal line overlay effect simulating old CRT displays
+- **Custom Scrollbar**: Deep pink scrollbar on black background
+- **Neon Color Palette**: Pink/magenta dominant with purple shadows and glows
+- **Background Effects**: Fuchsia gradient backgrounds with opacity overlays
+- **Typography**: Multiple Google Fonts for varied text styling (gothic, handwritten, modern)
 
 ## Component Architecture
 
