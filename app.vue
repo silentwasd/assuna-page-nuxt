@@ -10,9 +10,14 @@
 
             <!-- Dynamic Retro Wave Backgrounds -->
             <BackgroundSovietWaveGradient/>
+            <BackgroundRetroAurora/>
             <BackgroundRetroStars/>
+            <BackgroundEnergyOrbs/>
+            <BackgroundFloatingGeometry/>
             <BackgroundRetroGrid/>
+            <BackgroundRetroCitySkyline/>
             <BackgroundSynthwaveHorizon/>
+            <BackgroundLaserBeams/>
             
             <!-- VHS Effects Layer -->
             <BackgroundRetroColorFilter/>
