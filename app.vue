@@ -8,16 +8,8 @@
                 <title>Главная</title>
             </Head>
 
-            <!-- Dynamic Retro Wave Backgrounds -->
-            <BackgroundSovietWaveGradient/>
-            <BackgroundRetroAurora/>
-            <BackgroundRetroStars/>
-            <BackgroundEnergyOrbs/>
-            <BackgroundFloatingGeometry/>
-            <BackgroundRetroGrid/>
-            <BackgroundRetroCitySkyline/>
-            <BackgroundSynthwaveHorizon/>
-            <BackgroundLaserBeams/>
+            <!-- Minimalistic Cyberpunk City Background -->
+            <BackgroundCyberpunkCity/>
             
             <!-- VHS Effects Layer -->
             <BackgroundRetroColorFilter/>
