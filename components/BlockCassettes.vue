@@ -1,7 +1,7 @@
 <!-- components/BlockCassettes.vue -->
 <template>
-  <div class="p-5 md:p-10 font-orbitron text-black">
-    <h2 class="text-2xl md:text-4xl text-center font-gothic px-5 md:px-10 pt-5 md:pt-10 mb-5">
+  <div class="p-5 md:p-10 font-orbitron text-black ">
+    <h2 class="text-2xl md:text-4xl text-center font-gothic px-5 md:px-10 pt-5 md:pt-10 mb-5 ">
        Моя коллекция кассет
     </h2>
     <p class="mb-4 text-gray-800">
@@ -17,3 +17,12 @@
 </template>
 <script setup lang="ts">
 </script>
+
+
+<style>
+.dark-text {
+color: #000;
+text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+font-weight: 500;
+}
+</style>

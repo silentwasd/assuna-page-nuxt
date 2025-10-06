@@ -8,7 +8,8 @@ interface Cassette {
   description: string;
   year: number;
   brand: string;
-  coverImageUrl: string;
+  frontCoverUrl: string;
+  backCoverUrl: string;
 }
 
 const cassettes = ref<Cassette[]>([]);
@@ -18,7 +19,8 @@ const currentCassette = ref<Cassette>({
   description: '',
   year: 1980,
   brand: '',
-  coverImageUrl: ''
+  frontCoverUrl: '',
+  backCoverUrl: ''
 });
 const showForm = ref(false);
 const { logout } = useAuth();
@@ -58,13 +60,29 @@ const deleteCassette = async (id: number) => {
 };
 
 const openCreateForm = () => {
-  currentCassette.value = { id: 0, title: '', description: '', year: 1980, brand: '', coverImageUrl: '' };
+  currentCassette.value = {
+    id: 0,
+    title: '',
+    description: '',
+    year: 1980,
+    brand: '',
+    frontCoverUrl: '',
+    backCoverUrl: ''
+  };
   showForm.value = true;
 };
 
 const resetForm = () => {
   showForm.value = false;
-  currentCassette.value = { id: 0, title: '', description: '', year: 1980, brand: '', coverImageUrl: '' };
+  currentCassette.value = {
+    id: 0,
+    title: '',
+    description: '',
+    year: 1980,
+    brand: '',
+    frontCoverUrl: '',
+    backCoverUrl: ''
+  };
 };
 
 onMounted(loadCassettes);
@@ -120,8 +138,13 @@ onMounted(loadCassettes);
                 class="w-full p-2 bg-black/50 border border-pink-500 text-pink-200 placeholder:text-pink-500/50"
             />
             <input
-                v-model="currentCassette.coverImageUrl"
-                placeholder="URL обложки (https://...)"
+                v-model="currentCassette.frontCoverUrl"
+                placeholder="URL обложки спереди (https://...)"
+                class="w-full p-2 bg-black/50 border border-cyan-500 text-cyan-200 placeholder:text-cyan-500/50"
+            />
+            <input
+                v-model="currentCassette.backCoverUrl"
+                placeholder="URL обложки сзади (https://...)"
                 class="w-full p-2 bg-black/50 border border-purple-500 text-purple-200 placeholder:text-purple-500/50"
             />
             <textarea
@@ -149,16 +172,26 @@ onMounted(loadCassettes);
             <div
                 v-for="cassette in cassettes"
                 :key="cassette.id"
-                class="p-4 bg-pink-900/10 border border-pink-700 rounded flex flex-col md:flex-row justify-between gap-4 items-start md:items-center"
+                class="p-4 bg-pink-900/10 border border-pink-700 rounded flex flex-col md:flex-row justify-between gap-4 items-start"
             >
               <div class="flex gap-4 items-start">
-                <img
-                    v-if="cassette.coverImageUrl"
-                    :src="cassette.coverImageUrl"
-                    alt="Обложка кассеты"
-                    class="w-16 h-16 object-cover rounded border border-gray-600 shadow"
-                    @error="cassette.coverImageUrl = ''"
-                />
+                <!-- Две миниатюры -->
+                <div class="flex flex-col gap-1">
+                  <img
+                      v-if="cassette.frontCoverUrl"
+                      :src="cassette.frontCoverUrl"
+                      alt="Обложка спереди"
+                      class="w-14 h-14 object-cover rounded border border-cyan-600"
+                      @error="cassette.frontCoverUrl = ''"
+                  />
+                  <img
+                      v-if="cassette.backCoverUrl"
+                      :src="cassette.backCoverUrl"
+                      alt="Обложка сзади"
+                      class="w-14 h-14 object-cover rounded border border-purple-600"
+                      @error="cassette.backCoverUrl = ''"
+                  />
+                </div>
                 <div>
                   <div class="font-bold retro-text text-lg">{{ cassette.title }}</div>
                   <div class="text-sm text-yellow-300">{{ cassette.brand }} • {{ cassette.year }}</div>
@@ -167,7 +200,7 @@ onMounted(loadCassettes);
                   </div>
                 </div>
               </div>
-              <div class="flex gap-2">
+              <div class="flex gap-2 self-start md:self-center">
                 <button
                     @click="editCassette(cassette)"
                     class="text-blue-300 hover:text-blue-100 text-lg"
