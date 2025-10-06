@@ -1,5 +1,9 @@
 <!-- pages/admin/login.vue -->
 <script setup lang="ts">
+import { ref } from 'vue';
+import { useAuth } from '~/composables/useAuth';
+import { navigateTo } from 'nuxt/app';
+
 const email = ref('admin@assunayuuki.ru');
 const password = ref('');
 const loading = ref(false);
