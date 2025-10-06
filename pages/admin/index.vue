@@ -1,6 +1,6 @@
 <!-- pages/admin/index.vue -->
 <script setup lang="ts">
-definePageMeta({ middleware: 'auth' });
+// definePageMeta({ middleware: 'auth' });
 
 interface Product {
   id: number;
