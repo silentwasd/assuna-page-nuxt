@@ -1,27 +1,27 @@
 <!-- pages/admin/login.vue -->
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useAuth } from '~/composables/useAuth';
-import { navigateTo } from 'nuxt/app';
+import { ref } from 'vue'
+import { navigateTo } from '#imports'
+import { useAuth } from '~/composables/useAuth'
 
-const email = ref('admin@assunayuuki.ru');
-const password = ref('');
-const loading = ref(false);
-const error = ref('');
-const { login } = useAuth();
+const email = ref('admin@assunayuuki.ru')
+const password = ref('')
+const loading = ref(false)
+const error = ref('')
+const { login } = useAuth()
 
 const handleLogin = async () => {
-  loading.value = true;
-  error.value = '';
+  loading.value = true
+  error.value = ''
   try {
-    await login(email.value, password.value);
-    await navigateTo('/admin');
+    await login(email.value, password.value)
+    await navigateTo('/admin')
   } catch (err: any) {
-    error.value = err.message || 'Ошибка входа';
+    error.value = err.message || 'Ошибка входа'
   } finally {
-    loading.value = false;
+    loading.value = false
   }
-};
+}
 </script>
 
 <template>
