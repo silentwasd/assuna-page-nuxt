@@ -10,7 +10,6 @@ const handleLogin = async () => {
   loading.value = true;
   error.value = '';
   try {
-    await login(email.value, password.value);
     await navigateTo('/admin');
   } catch (err: any) {
     error.value = err.message || 'Ошибка входа';
