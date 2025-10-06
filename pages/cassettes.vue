@@ -22,7 +22,7 @@ const showModal = ref(false);
 
 onMounted(async () => {
   try {
-    const data = await $fetch('https://back.assunayuuki.ru/cassettes');
+    const data = await $fetch('https://back.assunayuuki.ru/cassettes  ');
     if (Array.isArray(data)) {
       cassettes.value = data;
       const uniqueBrands = [...new Set(data.map(c => c.brand))].sort();
