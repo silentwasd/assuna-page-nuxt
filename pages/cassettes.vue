@@ -13,7 +13,7 @@ interface Cassette {
 const cassettes = ref<Cassette[]>([]);
 const brands = ref<string[]>([]);
 const selectedBrand = ref<string | null>(null);
-const selectedCassette = ref<Cassette | null>(null); // данные для модалки
+const selectedCassette = ref<Cassette | null>(null); // для модального окна
 const showModal = ref(false);
 
 onMounted(async () => {
@@ -40,12 +40,13 @@ const filteredCassettes = computed(() => {
   return cassettes.value.filter(c => c.brand === selectedBrand.value);
 });
 
-// Открыть модальное окно с уже имеющимися данными
+// Открыть модальное окно
 const openModal = (cassette: Cassette) => {
   selectedCassette.value = cassette;
   showModal.value = true;
 };
 
+// Закрыть модальное окно
 const closeModal = () => {
   showModal.value = false;
   selectedCassette.value = null;
@@ -62,7 +63,7 @@ const closeModal = () => {
           📼 Коллекция AssunaYuuki
         </h1>
 
-        <!-- Цитата от лисички (из Knowledge Base!) -->
+        <!-- Цитата от лисички -->
         <div class="flex flex-col md:flex-row items-start gap-4 mb-8 bg-black/30 p-4 rounded-lg border border-cyan-500/50">
           <img
               src="/img/fennec.png"
@@ -158,7 +159,7 @@ const closeModal = () => {
               </button>
             </div>
 
-            <div class="flex gap-4 mb-4 justify-center">
+            <div class="flex gap-4 mb-4">
               <img
                   v-if="selectedCassette?.frontCoverUrl"
                   :src="selectedCassette.frontCoverUrl"
@@ -175,17 +176,17 @@ const closeModal = () => {
               />
             </div>
 
-            <p class="text-yellow-900 text-lg drop-shadow-[0_1px_1px_rgba(0,0,0,0.5)] mb-2 text-center">
+            <p class="text-yellow-900 text-lg drop-shadow-[0_1px_1px_rgba(0,0,0,0.5)] mb-2">
               {{ selectedCassette?.brand }} • {{ selectedCassette?.year }}
             </p>
 
             <p
                 v-if="selectedCassette?.description"
-                class="text-gray-800 drop-shadow-[0_1px_1px_rgba(0,0,0,0.4)] leading-relaxed text-center"
+                class="text-gray-800 drop-shadow-[0_1px_1px_rgba(0,0,0,0.4)] leading-relaxed"
             >
               {{ selectedCassette.description }}
             </p>
-            <p v-else class="text-gray-600 italic text-center">Описание отсутствует.</p>
+            <p v-else class="text-gray-600 italic">Описание отсутствует.</p>
 
             <div class="mt-6 text-center text-gray-700 text-sm">
               📼 Коллекция AssunaYuuki • 900 лет в поисках красоты
