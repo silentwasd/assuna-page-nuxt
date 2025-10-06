@@ -10,6 +10,11 @@ interface Cassette {
   brand: string;
   frontCoverUrl: string;
   backCoverUrl: string;
+  specs: string;           // Основные характеристики
+  features: string;        // Особенности
+  popularity: string;      // Почему популярна?
+  funFact: string;         // Интересный факт
+  howToSpotOriginal: string; // Как распознать оригинал?
 }
 
 const cassettes = ref<Cassette[]>([]);
@@ -20,7 +25,12 @@ const currentCassette = ref<Cassette>({
   year: 1980,
   brand: '',
   frontCoverUrl: '',
-  backCoverUrl: ''
+  backCoverUrl: '',
+  specs: '',
+  features: '',
+  popularity: '',
+  funFact: '',
+  howToSpotOriginal: ''
 });
 const showForm = ref(false);
 const { logout } = useAuth();
@@ -67,7 +77,12 @@ const openCreateForm = () => {
     year: 1980,
     brand: '',
     frontCoverUrl: '',
-    backCoverUrl: ''
+    backCoverUrl: '',
+    specs: '',
+    features: '',
+    popularity: '',
+    funFact: '',
+    howToSpotOriginal: ''
   };
   showForm.value = true;
 };
@@ -81,7 +96,12 @@ const resetForm = () => {
     year: 1980,
     brand: '',
     frontCoverUrl: '',
-    backCoverUrl: ''
+    backCoverUrl: '',
+    specs: '',
+    features: '',
+    popularity: '',
+    funFact: '',
+    howToSpotOriginal: ''
   };
 };
 
@@ -149,10 +169,51 @@ onMounted(loadCassettes);
             />
             <textarea
                 v-model="currentCassette.description"
-                placeholder="Описание (тип ленты, особенности, страна...)"
+                placeholder="Краткое описание (тип ленты, страна...)"
                 rows="3"
                 class="w-full p-2 bg-black/50 border border-purple-500 text-purple-200 placeholder:text-purple-500/50"
             ></textarea>
+
+            <!-- Новые поля -->
+            <div class="space-y-3 mt-4 pt-4 border-t border-gray-700">
+              <h4 class="text-cyan-300 font-orbitron">Дополнительная информация</h4>
+
+              <textarea
+                  v-model="currentCassette.specs"
+                  placeholder="Основные характеристики (тип ленты, уровень шума, чувствительность...)"
+                  rows="3"
+                  class="w-full p-2 bg-black/50 border border-cyan-500 text-cyan-200 placeholder:text-cyan-500/50"
+              ></textarea>
+
+              <textarea
+                  v-model="currentCassette.features"
+                  placeholder="Особенности (уникальная формула ленты, страна производства...)"
+                  rows="3"
+                  class="w-full p-2 bg-black/50 border border-yellow-500 text-yellow-200 placeholder:text-yellow-500/50"
+              ></textarea>
+
+              <textarea
+                  v-model="currentCassette.popularity"
+                  placeholder="Почему была так популярна? (пример: «Использовалась в студиях Sony в 1980-х»)"
+                  rows="3"
+                  class="w-full p-2 bg-black/50 border border-pink-500 text-pink-200 placeholder:text-pink-500/50"
+              ></textarea>
+
+              <textarea
+                  v-model="currentCassette.funFact"
+                  placeholder="Интересный факт (например: «Выпускалась ограниченной серией для Олимпиады-88»)"
+                  rows="3"
+                  class="w-full p-2 bg-black/50 border border-green-500 text-green-200 placeholder:text-green-500/50"
+              ></textarea>
+
+              <textarea
+                  v-model="currentCassette.howToSpotOriginal"
+                  placeholder="Как распознать оригинал? (голографический стикер, особый шрифт на коробке...)"
+                  rows="3"
+                  class="w-full p-2 bg-black/50 border border-purple-500 text-purple-200 placeholder:text-purple-500/50"
+              ></textarea>
+            </div>
+
             <div class="flex gap-2">
               <button @click="saveCassette" class="px-4 py-2 bg-cyan-900/50 hover:bg-cyan-800/60 rounded font-orbitron">
                 Сохранить
@@ -175,19 +236,18 @@ onMounted(loadCassettes);
                 class="p-4 bg-pink-900/10 border border-pink-700 rounded flex flex-col md:flex-row justify-between gap-4 items-start"
             >
               <div class="flex gap-4 items-start">
-                <!-- Две миниатюры -->
                 <div class="flex flex-col gap-1">
                   <img
                       v-if="cassette.frontCoverUrl"
                       :src="cassette.frontCoverUrl"
-                      alt="Обложка спереди"
+                      alt="Спереди"
                       class="w-14 h-14 object-cover rounded border border-cyan-600"
                       @error="cassette.frontCoverUrl = ''"
                   />
                   <img
                       v-if="cassette.backCoverUrl"
                       :src="cassette.backCoverUrl"
-                      alt="Обложка сзади"
+                      alt="Сзади"
                       class="w-14 h-14 object-cover rounded border border-purple-600"
                       @error="cassette.backCoverUrl = ''"
                   />
