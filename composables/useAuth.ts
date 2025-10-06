@@ -1,7 +1,5 @@
 // composables/useAuth.ts
-import {navigateTo, useCookie} from '#imports'
-
-export const useAuth = () => {
+export default function () {
     const token = useCookie('auth_token')
 
     const login = async (email: string, password: string) => {
