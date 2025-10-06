@@ -6,16 +6,18 @@ interface Cassette {
   description: string;
   year: number;
   brand: string;
-  coverImageUrl: string;
+  frontCoverUrl: string;
+  backCoverUrl: string;
 }
 
-// Инициализируем как ПУСТОЙ МАССИВ — чтобы избежать ошибки .length
+// Инициализируем как ПУСТОЙ МАССИВ
 const cassettes = ref<Cassette[]>([]);
 const brands = ref<string[]>([]);
 const selectedBrand = ref<string | null>(null);
 
 onMounted(async () => {
   try {
+    // Убраны пробелы в URL!
     const data = await $fetch('https://back.assunayuuki.ru/cassettes');
     if (Array.isArray(data)) {
       cassettes.value = data;
@@ -48,13 +50,13 @@ const filteredCassettes = computed(() => {
           📼 Коллекция AssunaYuuki
         </h1>
 
-        <!-- Цитата от лисички -->
+        <!-- Цитата от лисички (из Knowledge Base!) -->
         <div class="flex flex-col md:flex-row items-start gap-4 mb-8 bg-black/30 p-4 rounded-lg border border-cyan-500/50">
           <img
               src="/img/fennec.png"
               alt="AssunaYuuki"
               class="w-20 h-20 rounded-full border-2 border-pink-500 object-cover"
-              onerror="this.src='/fallback-avatar.png'"
+              @error="this.src = '/img/fallback.png'"
           />
           <p class="text-gray-800 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)] leading-relaxed">
             За эти долгие годы я повидала много всего, и самым интересным для меня оказались всякие технические устройства, которые были изобретены давно-давно. Особенно я люблю японские аудиокассеты — они такие аккуратные и красивые! Фыр-фыр! 🦊
@@ -87,17 +89,18 @@ const filteredCassettes = computed(() => {
           Но я уже ищу новые! Фыр-фыр!
         </div>
         <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div
+          <NuxtLink
               v-for="cassette in filteredCassettes"
               :key="cassette.id"
-              class="bg-black/40 border border-pink-700/60 rounded-xl p-4 flex flex-col items-center"
+              :to="`/cassettes/${cassette.id}`"
+              class="bg-black/40 border border-pink-700/60 rounded-xl p-4 flex flex-col items-center hover:bg-black/50 transition cursor-pointer"
           >
             <img
-                v-if="cassette.coverImageUrl"
-                :src="cassette.coverImageUrl"
+                v-if="cassette.frontCoverUrl"
+                :src="cassette.frontCoverUrl"
                 alt="Обложка кассеты"
                 class="w-full h-32 object-contain mb-3 rounded border border-gray-700"
-                @error="cassette.coverImageUrl = ''"
+                @error="cassette.frontCoverUrl = ''"
             />
             <h3 class="font-bold retro-text text-lg text-center text-gray-900 drop-shadow-[0_2px_3px_rgba(0,0,0,0.7)]">
               {{ cassette.title }}
@@ -111,7 +114,7 @@ const filteredCassettes = computed(() => {
             >
               {{ cassette.description }}
             </p>
-          </div>
+          </NuxtLink>
         </div>
 
         <!-- Ссылка назад -->
