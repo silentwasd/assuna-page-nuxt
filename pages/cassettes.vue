@@ -14,10 +14,11 @@ interface Cassette {
 const cassettes = ref<Cassette[]>([]);
 const brands = ref<string[]>([]);
 const selectedBrand = ref<string | null>(null);
+const selectedCassette = ref<Cassette | null>(null); // для модального окна
+const showModal = ref(false);
 
 onMounted(async () => {
   try {
-    // Убраны пробелы в URL!
     const data = await $fetch('https://back.assunayuuki.ru/cassettes');
     if (Array.isArray(data)) {
       cassettes.value = data;
@@ -39,18 +40,31 @@ const filteredCassettes = computed(() => {
   if (!selectedBrand.value) return cassettes.value;
   return cassettes.value.filter(c => c.brand === selectedBrand.value);
 });
+
+// Открыть модальное окно
+const openModal = (cassette: Cassette) => {
+  selectedCassette.value = cassette;
+  showModal.value = true;
+};
+
+// Закрыть модальное окно
+const closeModal = () => {
+  showModal.value = false;
+  selectedCassette.value = null;
+};
 </script>
 
 <template>
   <DecoratorRgbBorder>
     <DecoratorOpacityBackground :opacity="0.85">
       <div class="p-4 md:p-8 font-orbitron text-black max-w-4xl mx-auto">
+
         <!-- Заголовок -->
         <h1 class="text-2xl md:text-3xl retro-text mb-6 text-gray-900 drop-shadow-[0_2px_3px_rgba(0,0,0,0.7)] text-center">
           📼 Коллекция AssunaYuuki
         </h1>
 
-        <!-- Цитата от лисички (из Knowledge Base!) -->
+        <!-- Цитата от лисички -->
         <div class="flex flex-col md:flex-row items-start gap-4 mb-8 bg-black/30 p-4 rounded-lg border border-cyan-500/50">
           <img
               src="/img/fennec.png"
@@ -89,11 +103,11 @@ const filteredCassettes = computed(() => {
           Но я уже ищу новые! Фыр-фыр!
         </div>
         <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <NuxtLink
+          <div
               v-for="cassette in filteredCassettes"
               :key="cassette.id"
-              :to="`/cassettes/${cassette.id}`"
-              class="bg-black/40 border border-pink-700/60 rounded-xl p-4 flex flex-col items-center hover:bg-black/50 transition cursor-pointer"
+              @click="openModal(cassette)"
+              class="bg-black/40 border border-pink-700/60 rounded-xl p-4 flex flex-col items-center cursor-pointer hover:bg-black/50 transition"
           >
             <img
                 v-if="cassette.frontCoverUrl"
@@ -114,7 +128,7 @@ const filteredCassettes = computed(() => {
             >
               {{ cassette.description }}
             </p>
-          </NuxtLink>
+          </div>
         </div>
 
         <!-- Ссылка назад -->
@@ -126,6 +140,61 @@ const filteredCassettes = computed(() => {
             &larr; Вернуться к лисичке
           </NuxtLink>
         </div>
+
+        <!-- МОДАЛЬНОЕ ОКНО -->
+        <div
+            v-if="showModal"
+            class="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4"
+            @click.self="closeModal"
+        >
+          <div class="bg-black/80 border border-cyan-500/50 rounded-xl p-6 max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-start mb-4">
+              <h2 class="text-xl retro-text text-gray-900 drop-shadow-[0_2px_3px_rgba(0,0,0,0.7)]">
+                {{ selectedCassette?.title }}
+              </h2>
+              <button
+                  @click="closeModal"
+                  class="text-gray-400 hover:text-white text-xl"
+              >
+                ×
+              </button>
+            </div>
+
+            <div class="flex gap-4 mb-4">
+              <img
+                  v-if="selectedCassette?.frontCoverUrl"
+                  :src="selectedCassette.frontCoverUrl"
+                  alt="Обложка спереди"
+                  class="w-24 h-24 object-cover rounded border border-cyan-500"
+                  @error="selectedCassette.frontCoverUrl = ''"
+              />
+              <img
+                  v-if="selectedCassette?.backCoverUrl"
+                  :src="selectedCassette.backCoverUrl"
+                  alt="Обложка сзади"
+                  class="w-24 h-24 object-cover rounded border border-purple-500"
+                  @error="selectedCassette.backCoverUrl = ''"
+              />
+            </div>
+
+            <p class="text-yellow-900 text-lg drop-shadow-[0_1px_1px_rgba(0,0,0,0.5)] mb-2">
+              {{ selectedCassette?.brand }} • {{ selectedCassette?.year }}
+            </p>
+
+            <p
+                v-if="selectedCassette?.description"
+                class="text-gray-800 drop-shadow-[0_1px_1px_rgba(0,0,0,0.4)] leading-relaxed"
+            >
+              {{ selectedCassette.description }}
+            </p>
+            <p v-else class="text-gray-600 italic">Описание отсутствует.</p>
+
+            <div class="mt-6 text-center text-gray-700 text-sm">
+              📼 Коллекция AssunaYuuki • 900 лет в поисках красоты
+            </div>
+          </div>
+        </div>
+
       </div>
     </DecoratorOpacityBackground>
   </DecoratorRgbBorder>
