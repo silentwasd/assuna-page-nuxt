@@ -7,13 +7,17 @@ interface Cassette {
   brand: string;
   frontCoverUrl: string;
   backCoverUrl: string;
+  specs: string;           // Основные характеристики
+  features: string;        // Особенности
+  popularity: string;      // Почему популярна?
+  funFact: string;         // Интересный факт
+  howToSpotOriginal: string; // Как распознать оригинал?
 }
 
-// Инициализируем как ПУСТОЙ МАССИВ
 const cassettes = ref<Cassette[]>([]);
 const brands = ref<string[]>([]);
 const selectedBrand = ref<string | null>(null);
-const selectedCassette = ref<Cassette | null>(null); // для модального окна
+const selectedCassette = ref<Cassette | null>(null);
 const showModal = ref(false);
 
 onMounted(async () => {
@@ -24,7 +28,6 @@ onMounted(async () => {
       const uniqueBrands = [...new Set(data.map(c => c.brand))].sort();
       brands.value = uniqueBrands;
     } else {
-      console.warn('Бэкенд вернул не массив:', data);
       cassettes.value = [];
       brands.value = [];
     }
@@ -40,13 +43,11 @@ const filteredCassettes = computed(() => {
   return cassettes.value.filter(c => c.brand === selectedBrand.value);
 });
 
-// Открыть модальное окно
 const openModal = (cassette: Cassette) => {
   selectedCassette.value = cassette;
   showModal.value = true;
 };
 
-// Закрыть модальное окно
 const closeModal = () => {
   showModal.value = false;
   selectedCassette.value = null;
@@ -63,7 +64,7 @@ const closeModal = () => {
           📼 Коллекция AssunaYuuki
         </h1>
 
-        <!-- Цитата от лисички -->
+        <!-- Цитата от лисички (из Knowledge Base!) -->
         <div class="flex flex-col md:flex-row items-start gap-4 mb-8 bg-black/30 p-4 rounded-lg border border-cyan-500/50">
           <img
               src="/img/fennec.png"
@@ -121,12 +122,6 @@ const closeModal = () => {
             <p class="text-yellow-900 text-sm drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">
               {{ cassette.brand }} • {{ cassette.year }}
             </p>
-            <p
-                v-if="cassette.description"
-                class="text-xs text-gray-800 mt-2 text-center line-clamp-3 drop-shadow-[0_1px_1px_rgba(0,0,0,0.4)] leading-tight"
-            >
-              {{ cassette.description }}
-            </p>
           </div>
         </div>
 
@@ -140,13 +135,13 @@ const closeModal = () => {
           </NuxtLink>
         </div>
 
-        <!-- МОДАЛЬНОЕ ОКНО -->
+        <!-- МОДАЛЬНОЕ ОКНО С ПОЛНОЙ ИНФОРМАЦИЕЙ -->
         <div
             v-if="showModal"
             class="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4"
             @click.self="closeModal"
         >
-          <div class="bg-black/80 border border-cyan-500/50 rounded-xl p-6 max-w-md w-full max-h-[90vh] overflow-y-auto">
+          <div class="bg-black/80 border border-cyan-500/50 rounded-xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-start mb-4">
               <h2 class="text-xl retro-text text-gray-900 drop-shadow-[0_2px_3px_rgba(0,0,0,0.7)]">
                 {{ selectedCassette?.title }}
@@ -159,34 +154,63 @@ const closeModal = () => {
               </button>
             </div>
 
-            <div class="flex gap-4 mb-4">
+            <!-- Обложки -->
+            <div class="flex gap-4 mb-4 justify-center">
               <img
                   v-if="selectedCassette?.frontCoverUrl"
                   :src="selectedCassette.frontCoverUrl"
-                  alt="Обложка спереди"
-                  class="w-24 h-24 object-cover rounded border border-cyan-500"
+                  alt="Спереди"
+                  class="w-28 h-28 object-cover rounded border border-cyan-500"
                   @error="selectedCassette.frontCoverUrl = ''"
               />
               <img
                   v-if="selectedCassette?.backCoverUrl"
                   :src="selectedCassette.backCoverUrl"
-                  alt="Обложка сзади"
-                  class="w-24 h-24 object-cover rounded border border-purple-500"
+                  alt="Сзади"
+                  class="w-28 h-28 object-cover rounded border border-purple-500"
                   @error="selectedCassette.backCoverUrl = ''"
               />
             </div>
 
-            <p class="text-yellow-900 text-lg drop-shadow-[0_1px_1px_rgba(0,0,0,0.5)] mb-2">
+            <!-- Основная информация -->
+            <p class="text-yellow-900 text-lg drop-shadow-[0_1px_1px_rgba(0,0,0,0.5)] mb-4 text-center">
               {{ selectedCassette?.brand }} • {{ selectedCassette?.year }}
             </p>
 
-            <p
-                v-if="selectedCassette?.description"
-                class="text-gray-800 drop-shadow-[0_1px_1px_rgba(0,0,0,0.4)] leading-relaxed"
-            >
-              {{ selectedCassette.description }}
-            </p>
-            <p v-else class="text-gray-600 italic">Описание отсутствует.</p>
+            <!-- Краткое описание -->
+            <div v-if="selectedCassette?.description" class="mb-4 p-3 bg-gray-800/40 rounded border border-gray-600">
+              <p class="text-gray-200">{{ selectedCassette.description }}</p>
+            </div>
+
+            <!-- Основные характеристики -->
+            <div v-if="selectedCassette?.specs" class="mb-4 p-3 bg-cyan-900/20 rounded border border-cyan-700">
+              <h3 class="text-cyan-300 font-orbitron text-sm mb-1">Основные характеристики</h3>
+              <p class="text-cyan-100 text-sm">{{ selectedCassette.specs }}</p>
+            </div>
+
+            <!-- Особенности -->
+            <div v-if="selectedCassette?.features" class="mb-4 p-3 bg-yellow-900/20 rounded border border-yellow-700">
+              <h3 class="text-yellow-300 font-orbitron text-sm mb-1">Особенности</h3>
+              <p class="text-yellow-100 text-sm">{{ selectedCassette.features }}</p>
+            </div>
+
+            <!-- Почему популярна? -->
+            <div v-if="selectedCassette?.popularity" class="mb-4 p-3 bg-pink-900/20 rounded border border-pink-700">
+              <h3 class="text-pink-300 font-orbitron text-sm mb-1">Почему была так популярна?</h3>
+              <p class="text-pink-100 text-sm">{{ selectedCassette.popularity }}</p>
+            </div>
+
+            <!-- Интересный факт -->
+            <div v-if="selectedCassette?.funFact" class="mb-4 p-3 bg-green-900/20 rounded border border-green-700">
+              <h3 class="text-green-300 font-orbitron text-sm mb-1">Интересный факт</h3>
+              <p class="text-green-100 text-sm">{{ selectedCassette.funFact }}</p>
+            </div>
+
+            <!-- Как распознать оригинал? -->
+            <div v-if="selectedCassette?.howToSpotOriginal" class="mb-4 p-3 bg-purple-900/20 rounded border border-purple-700">
+              <h3 class="text-purple-300 font-orbitron text-sm mb-1">Как распознать оригинал?</h3>
+              <p class="text-purple-100 text-sm">{{ selectedCassette.howToSpotOriginal }}</p>
+            </div>
 
             <div class="mt-6 text-center text-gray-700 text-sm">
               📼 Коллекция AssunaYuuki • 900 лет в поисках красоты
