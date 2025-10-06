@@ -183,33 +183,43 @@ const closeModal = () => {
             </div>
 
             <!-- Основные характеристики -->
-            <div v-if="selectedCassette?.specs" class="mb-4 p-3 bg-cyan-900/20 rounded border border-cyan-700">
-              <h3 class="text-cyan-300 font-orbitron text-sm mb-1">Основные характеристики</h3>
-              <p class="text-cyan-100 text-sm">{{ selectedCassette.specs }}</p>
+            <div v-if="selectedCassette?.specs" class="mb-4 p-3 bg-cyan-900/20 rounded border border-cyan-500">
+              <h3 class="text-cyan-200 font-orbitron text-sm mb-1">Основные характеристики</h3>
+              <p class="text-cyan-100 drop-shadow-[0_1px_1px_rgba(0,0,0,0.6)] text-sm leading-relaxed whitespace-pre-line">
+                {{ selectedCassette.specs }}
+              </p>
             </div>
 
             <!-- Особенности -->
-            <div v-if="selectedCassette?.features" class="mb-4 p-3 bg-yellow-900/20 rounded border border-yellow-700">
-              <h3 class="text-yellow-300 font-orbitron text-sm mb-1">Особенности</h3>
-              <p class="text-yellow-100 text-sm">{{ selectedCassette.features }}</p>
+            <div v-if="selectedCassette?.features" class="mb-4 p-3 bg-yellow-900/20 rounded border border-yellow-500">
+              <h3 class="text-yellow-200 font-orbitron text-sm mb-1">Особенности</h3>
+              <p class="text-yellow-100 drop-shadow-[0_1px_1px_rgba(0,0,0,0.6)] text-sm leading-relaxed whitespace-pre-line">
+                {{ selectedCassette.features }}
+              </p>
             </div>
 
             <!-- Почему популярна? -->
-            <div v-if="selectedCassette?.popularity" class="mb-4 p-3 bg-pink-900/20 rounded border border-pink-700">
-              <h3 class="text-pink-300 font-orbitron text-sm mb-1">Почему была так популярна?</h3>
-              <p class="text-pink-100 text-sm">{{ selectedCassette.popularity }}</p>
+            <div v-if="selectedCassette?.popularity" class="mb-4 p-3 bg-pink-900/20 rounded border border-pink-500">
+              <h3 class="text-pink-200 font-orbitron text-sm mb-1">Почему была так популярна?</h3>
+              <p class="text-pink-100 drop-shadow-[0_1px_1px_rgba(0,0,0,0.6)] text-sm leading-relaxed whitespace-pre-line">
+                {{ selectedCassette.popularity }}
+              </p>
             </div>
 
             <!-- Интересный факт -->
-            <div v-if="selectedCassette?.funFact" class="mb-4 p-3 bg-green-900/20 rounded border border-green-700">
-              <h3 class="text-green-300 font-orbitron text-sm mb-1">Интересный факт</h3>
-              <p class="text-green-100 text-sm">{{ selectedCassette.funFact }}</p>
+            <div v-if="selectedCassette?.funFact" class="mb-4 p-3 bg-green-900/20 rounded border border-green-500">
+              <h3 class="text-green-200 font-orbitron text-sm mb-1">Интересный факт</h3>
+              <p class="text-green-100 drop-shadow-[0_1px_1px_rgba(0,0,0,0.6)] text-sm leading-relaxed whitespace-pre-line">
+                {{ selectedCassette.funFact }}
+              </p>
             </div>
 
             <!-- Как распознать оригинал? -->
-            <div v-if="selectedCassette?.howToSpotOriginal" class="mb-4 p-3 bg-purple-900/20 rounded border border-purple-700">
-              <h3 class="text-purple-300 font-orbitron text-sm mb-1">Как распознать оригинал?</h3>
-              <p class="text-purple-100 text-sm">{{ selectedCassette.howToSpotOriginal }}</p>
+            <div v-if="selectedCassette?.howToSpotOriginal" class="mb-4 p-3 bg-purple-900/20 rounded border border-purple-500">
+              <h3 class="text-purple-200 font-orbitron text-sm mb-1">Как распознать оригинал?</h3>
+              <p class="text-cyan-100 drop-shadow-[0_1px_1px_rgba(0,0,0,0.6)] text-sm leading-relaxed whitespace-pre-line">
+                {{ selectedCassette.howToSpotOriginal }}
+              </p>
             </div>
 
             <div class="mt-6 text-center text-gray-700 text-sm">
