@@ -1,7 +1,6 @@
 <!-- pages/cassettes.vue -->
 <script setup lang="ts">
 interface Cassette {
-  id: number;
   title: string;
   description: string;
   year: number;
@@ -14,7 +13,7 @@ interface Cassette {
 const cassettes = ref<Cassette[]>([]);
 const brands = ref<string[]>([]);
 const selectedBrand = ref<string | null>(null);
-const selectedCassette = ref<Cassette | null>(null); // для модального окна
+const selectedCassette = ref<Cassette | null>(null); // данные для модалки
 const showModal = ref(false);
 
 onMounted(async () => {
@@ -41,13 +40,12 @@ const filteredCassettes = computed(() => {
   return cassettes.value.filter(c => c.brand === selectedBrand.value);
 });
 
-// Открыть модальное окно
+// Открыть модальное окно с уже имеющимися данными
 const openModal = (cassette: Cassette) => {
   selectedCassette.value = cassette;
   showModal.value = true;
 };
 
-// Закрыть модальное окно
 const closeModal = () => {
   showModal.value = false;
   selectedCassette.value = null;
@@ -64,7 +62,7 @@ const closeModal = () => {
           📼 Коллекция AssunaYuuki
         </h1>
 
-        <!-- Цитата от лисички -->
+        <!-- Цитата от лисички (из Knowledge Base!) -->
         <div class="flex flex-col md:flex-row items-start gap-4 mb-8 bg-black/30 p-4 rounded-lg border border-cyan-500/50">
           <img
               src="/img/fennec.png"
@@ -104,8 +102,8 @@ const closeModal = () => {
         </div>
         <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <div
-              v-for="cassette in filteredCassettes"
-              :key="cassette.id"
+              v-for="(cassette, index) in filteredCassettes"
+              :key="index"
               @click="openModal(cassette)"
               class="bg-black/40 border border-pink-700/60 rounded-xl p-4 flex flex-col items-center cursor-pointer hover:bg-black/50 transition"
           >
@@ -160,7 +158,7 @@ const closeModal = () => {
               </button>
             </div>
 
-            <div class="flex gap-4 mb-4">
+            <div class="flex gap-4 mb-4 justify-center">
               <img
                   v-if="selectedCassette?.frontCoverUrl"
                   :src="selectedCassette.frontCoverUrl"
@@ -177,17 +175,17 @@ const closeModal = () => {
               />
             </div>
 
-            <p class="text-yellow-900 text-lg drop-shadow-[0_1px_1px_rgba(0,0,0,0.5)] mb-2">
+            <p class="text-yellow-900 text-lg drop-shadow-[0_1px_1px_rgba(0,0,0,0.5)] mb-2 text-center">
               {{ selectedCassette?.brand }} • {{ selectedCassette?.year }}
             </p>
 
             <p
                 v-if="selectedCassette?.description"
-                class="text-gray-800 drop-shadow-[0_1px_1px_rgba(0,0,0,0.4)] leading-relaxed"
+                class="text-gray-800 drop-shadow-[0_1px_1px_rgba(0,0,0,0.4)] leading-relaxed text-center"
             >
               {{ selectedCassette.description }}
             </p>
-            <p v-else class="text-gray-600 italic">Описание отсутствует.</p>
+            <p v-else class="text-gray-600 italic text-center">Описание отсутствует.</p>
 
             <div class="mt-6 text-center text-gray-700 text-sm">
               📼 Коллекция AssunaYuuki • 900 лет в поисках красоты
