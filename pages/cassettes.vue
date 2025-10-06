@@ -7,11 +7,11 @@ interface Cassette {
   brand: string;
   frontCoverUrl: string;
   backCoverUrl: string;
-  specs: string;           // Основные характеристики
-  features: string;        // Особенности
-  popularity: string;      // Почему популярна?
-  funFact: string;         // Интересный факт
-  howToSpotOriginal: string; // Как распознать оригинал?
+  specs: string;
+  features: string;
+  popularity: string;
+  funFact: string;
+  howToSpotOriginal: string;
 }
 
 const cassettes = ref<Cassette[]>([]);
@@ -22,7 +22,8 @@ const showModal = ref(false);
 
 onMounted(async () => {
   try {
-    const data = await $fetch('https://back.assunayuuki.ru/cassettes  ');
+    // Убраны лишние пробелы в URL
+    const data = await $fetch('https://back.assunayuuki.ru/cassettes');
     if (Array.isArray(data)) {
       cassettes.value = data;
       const uniqueBrands = [...new Set(data.map(c => c.brand))].sort();
@@ -64,7 +65,7 @@ const closeModal = () => {
           📼 Коллекция AssunaYuuki
         </h1>
 
-        <!-- Цитата от лисички (из Knowledge Base!) -->
+        <!-- Цитата от лисички -->
         <div class="flex flex-col md:flex-row items-start gap-4 mb-8 bg-black/30 p-4 rounded-lg border border-cyan-500/50">
           <img
               src="/img/fennec.png"
@@ -135,95 +136,95 @@ const closeModal = () => {
           </NuxtLink>
         </div>
 
-        <!-- МОДАЛЬНОЕ ОКНО С ПОЛНОЙ ИНФОРМАЦИЕЙ -->
+        <!-- КОМПАКТНОЕ, НО ПОЛНОЕ МОДАЛЬНОЕ ОКНО -->
         <div
             v-if="showModal"
-            class="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4"
+            class="fixed inset-0 bg-black/85 flex items-start justify-center z-50 p-4 pt-10"
             @click.self="closeModal"
+            style="overscroll-behavior: contain;"
         >
-          <div class="bg-black/80 border border-cyan-500/50 rounded-xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div class="flex justify-between items-start mb-4">
-              <h2 class="text-xl retro-text text-gray-900 drop-shadow-[0_2px_3px_rgba(0,0,0,0.7)]">
-                {{ selectedCassette?.title }}
-              </h2>
-              <button
-                  @click="closeModal"
-                  class="text-gray-400 hover:text-white text-xl"
-              >
-                ×
-              </button>
+          <div
+              class="bg-gray-900 border border-cyan-500/60 rounded-xl w-full max-w-2xl max-h-[85vh] overflow-y-auto shadow-xl"
+              style="scrollbar-width: thin; scrollbar-color: #0891b2 #111827;"
+          >
+            <!-- Заголовок (прилипает сверху) -->
+            <div class="sticky top-0 bg-gray-900 z-10 p-5 pb-3 border-b border-cyan-500/30">
+              <div class="flex justify-between items-start">
+                <h2 class="text-xl retro-text text-cyan-300">
+                  📼 {{ selectedCassette?.title }}
+                </h2>
+                <button @click="closeModal" class="text-gray-400 hover:text-white text-xl font-bold">×</button>
+              </div>
+              <p class="text-yellow-300 text-center mt-2 text-sm">
+                {{ selectedCassette?.brand }} • {{ selectedCassette?.year }}
+              </p>
             </div>
 
             <!-- Обложки -->
-            <div class="flex gap-4 mb-4 justify-center">
+            <div class="flex justify-center gap-3 py-3">
               <img
                   v-if="selectedCassette?.frontCoverUrl"
                   :src="selectedCassette.frontCoverUrl"
-                  alt="Спереди"
-                  class="w-28 h-28 object-cover rounded border border-cyan-500"
+                  alt="Front"
+                  class="w-20 h-20 object-contain border border-cyan-600 rounded"
                   @error="selectedCassette.frontCoverUrl = ''"
               />
               <img
                   v-if="selectedCassette?.backCoverUrl"
                   :src="selectedCassette.backCoverUrl"
-                  alt="Сзади"
-                  class="w-28 h-28 object-cover rounded border border-purple-500"
+                  alt="Back"
+                  class="w-20 h-20 object-contain border border-purple-600 rounded"
                   @error="selectedCassette.backCoverUrl = ''"
               />
             </div>
 
-            <!-- Основная информация -->
-            <p class="text-yellow-900 text-lg drop-shadow-[0_1px_1px_rgba(0,0,0,0.5)] mb-4 text-center">
-              {{ selectedCassette?.brand }} • {{ selectedCassette?.year }}
-            </p>
+            <!-- Вся информация -->
+            <div class="px-5 pb-5 space-y-3">
+              <div v-if="selectedCassette?.description" class="p-3 rounded border border-gray-700 bg-gray-800/40">
+                <h3 class="font-orbitron text-xs mb-1 text-gray-300 flex items-center gap-1">📖 Описание</h3>
+                <p class="text-sm text-gray-200 leading-relaxed break-words whitespace-pre-wrap">
+                  {{ selectedCassette.description }}
+                </p>
+              </div>
 
-            <!-- Краткое описание -->
-            <div v-if="selectedCassette?.description" class="mb-4 p-3 bg-gray-800/40 rounded border border-gray-600">
-              <p class="text-gray-200">{{ selectedCassette.description }}</p>
-            </div>
+              <div v-if="selectedCassette?.specs" class="p-3 rounded border border-cyan-600 bg-cyan-900/20">
+                <h3 class="font-orbitron text-xs mb-1 text-cyan-200 flex items-center gap-1">📼 Основные характеристики</h3>
+                <p class="text-sm text-cyan-100 leading-relaxed break-words whitespace-pre-wrap">
+                  {{ selectedCassette.specs }}
+                </p>
+              </div>
 
-            <!-- Основные характеристики -->
-            <div v-if="selectedCassette?.specs" class="mb-4 p-3 bg-cyan-900/20 rounded border border-cyan-500">
-              <h3 class="text-cyan-200 font-orbitron text-sm mb-1">Основные характеристики</h3>
-              <p class="text-cyan-100 drop-shadow-[0_1px_1px_rgba(0,0,0,0.6)] text-sm leading-relaxed whitespace-pre-line">
-                {{ selectedCassette.specs }}
-              </p>
-            </div>
+              <div v-if="selectedCassette?.features" class="p-3 rounded border border-yellow-600 bg-yellow-900/20">
+                <h3 class="font-orbitron text-xs mb-1 text-yellow-200 flex items-center gap-1">✨ Особенности</h3>
+                <p class="text-sm text-yellow-100 leading-relaxed break-words whitespace-pre-wrap">
+                  {{ selectedCassette.features }}
+                </p>
+              </div>
 
-            <!-- Особенности -->
-            <div v-if="selectedCassette?.features" class="mb-4 p-3 bg-yellow-900/20 rounded border border-yellow-500">
-              <h3 class="text-yellow-200 font-orbitron text-sm mb-1">Особенности</h3>
-              <p class="text-yellow-100 drop-shadow-[0_1px_1px_rgba(0,0,0,0.6)] text-sm leading-relaxed whitespace-pre-line">
-                {{ selectedCassette.features }}
-              </p>
-            </div>
+              <div v-if="selectedCassette?.popularity" class="p-3 rounded border border-pink-600 bg-pink-900/20">
+                <h3 class="font-orbitron text-xs mb-1 text-pink-200 flex items-center gap-1">🔥 Почему популярна?</h3>
+                <p class="text-sm text-pink-100 leading-relaxed break-words whitespace-pre-wrap">
+                  {{ selectedCassette.popularity }}
+                </p>
+              </div>
 
-            <!-- Почему популярна? -->
-            <div v-if="selectedCassette?.popularity" class="mb-4 p-3 bg-pink-900/20 rounded border border-pink-500">
-              <h3 class="text-pink-200 font-orbitron text-sm mb-1">Почему была так популярна?</h3>
-              <p class="text-pink-100 drop-shadow-[0_1px_1px_rgba(0,0,0,0.6)] text-sm leading-relaxed whitespace-pre-line">
-                {{ selectedCassette.popularity }}
-              </p>
-            </div>
+              <div v-if="selectedCassette?.funFact" class="p-3 rounded border border-green-600 bg-green-900/20">
+                <h3 class="font-orbitron text-xs mb-1 text-green-200 flex items-center gap-1">❓ Интересный факт</h3>
+                <p class="text-sm text-green-100 leading-relaxed break-words whitespace-pre-wrap">
+                  {{ selectedCassette.funFact }}
+                </p>
+              </div>
 
-            <!-- Интересный факт -->
-            <div v-if="selectedCassette?.funFact" class="mb-4 p-3 bg-green-900/20 rounded border border-green-500">
-              <h3 class="text-green-200 font-orbitron text-sm mb-1">Интересный факт</h3>
-              <p class="text-green-100 drop-shadow-[0_1px_1px_rgba(0,0,0,0.6)] text-sm leading-relaxed whitespace-pre-line">
-                {{ selectedCassette.funFact }}
-              </p>
-            </div>
+              <div v-if="selectedCassette?.howToSpotOriginal" class="p-3 rounded border border-purple-600 bg-purple-900/20">
+                <h3 class="font-orbitron text-xs mb-1 text-purple-200 flex items-center gap-1">🔍 Как распознать оригинал?</h3>
+                <p class="text-sm text-purple-100 leading-relaxed break-words whitespace-pre-wrap">
+                  {{ selectedCassette.howToSpotOriginal }}
+                </p>
+              </div>
 
-            <!-- Как распознать оригинал? -->
-            <div v-if="selectedCassette?.howToSpotOriginal" class="mb-4 p-3 bg-purple-900/20 rounded border border-purple-500">
-              <h3 class="text-purple-200 font-orbitron text-sm mb-1">Как распознать оригинал?</h3>
-              <p class="text-cyan-100 drop-shadow-[0_1px_1px_rgba(0,0,0,0.6)] text-sm leading-relaxed whitespace-pre-line">
-                {{ selectedCassette.howToSpotOriginal }}
-              </p>
-            </div>
-
-            <div class="mt-6 text-center text-gray-700 text-sm">
-              📼 Коллекция AssunaYuuki • 900 лет в поисках красоты
+              <div class="pt-3 text-center text-gray-600 text-xs">
+                📼 Коллекция AssunaYuuki • 900 лет в поисках красоты
+              </div>
             </div>
           </div>
         </div>
