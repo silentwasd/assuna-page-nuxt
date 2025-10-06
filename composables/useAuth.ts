@@ -1,24 +1,27 @@
 // composables/useAuth.ts
+import { useCookie } from '#imports'
+import { navigateTo } from '#imports'
+
 export const useAuth = () => {
-    const token = useCookie('auth_token');
+    const token = useCookie('auth_token')
 
     const login = async (email: string, password: string) => {
         const res = await fetch('https://back.assunayuuki.ru/admin/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password })
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || 'Login failed');
-        token.value = data.token;
-    };
+        })
+        const data = await res.json()
+        if (!res.ok) throw new Error(data.error || 'Login failed')
+        token.value = data.token
+    }
 
     const logout = () => {
-        token.value = null;
-        navigateTo('/');
-    };
+        token.value = null
+        navigateTo('/')
+    }
 
-    const checkAuth = () => !!token.value;
+    const checkAuth = () => !!token.value
 
-    return { login, logout, checkAuth, token };
-};
+    return { login, logout, checkAuth, token }
+}
