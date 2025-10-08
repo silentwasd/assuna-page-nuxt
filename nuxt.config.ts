@@ -20,5 +20,12 @@ export default defineNuxtConfig({
                 src: '/js/metrics.js'
             }]
         }
+    },
+
+    // 👇 Добавляем runtimeConfig для API
+    runtimeConfig: {
+        public: {
+            apiBase: 'https://back.assunayuuki.ru'
+        }
     }
-})
+});

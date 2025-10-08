@@ -14,6 +14,13 @@ interface Cassette {
   howToSpotOriginal: string;
 }
 
+interface ArchiveMeta {
+  totalCassettes: number;
+  lastUpdated: string | null;
+  totalBrands: number;
+  yearRange: string | null;
+}
+
 const cassettes = ref<Cassette[]>([]);
 const brands = ref<string[]>([]);
 const selectedBrand = ref<string | null>(null);
@@ -22,12 +29,26 @@ const showModal = ref(false);
 const loading = ref(true);
 const error = ref<string | null>(null);
 const searchQuery = ref('');
+const archiveMeta = ref<ArchiveMeta | null>(null);
+const isWarmedUp = ref(false);
+
+const formatDate = (isoString: string | null): string => {
+  if (!isoString) return '—';
+  const date = new Date(isoString);
+  return date.toLocaleDateString('ru-RU', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  });
+};
+
+const config = useRuntimeConfig();
 
 const loadCassettes = async () => {
   loading.value = true;
   error.value = null;
   try {
-    const data = await $fetch('https://back.assunayuuki.ru/cassettes');
+    const data = await $fetch(`${config.public.apiBase}/cassettes`);
     if (Array.isArray(data)) {
       cassettes.value = data;
       const uniqueBrands = [...new Set(data.map(c => c.brand))].sort();
@@ -45,8 +66,28 @@ const loadCassettes = async () => {
   }
 };
 
+const loadArchiveMeta = async () => {
+  try {
+    const meta = await $fetch(`${config.public.apiBase}/archive`);
+    archiveMeta.value = meta;
+  } catch (err) {
+    console.error('Ошибка загрузки архива:', err);
+  }
+};
+
+const loadEverything = async () => {
+  loading.value = true;
+  error.value = null;
+  await Promise.allSettled([loadCassettes(), loadArchiveMeta()]);
+  loading.value = false;
+  // Эффект "разогрева" через 800 мс
+  setTimeout(() => {
+    isWarmedUp.value = true;
+  }, 800);
+};
+
 onMounted(() => {
-  loadCassettes();
+  loadEverything();
 });
 
 const filteredCassettes = computed(() => {
@@ -79,22 +120,31 @@ const closeModal = () => {
 </script>
 
 <template>
-  <div class="relative w-full min-h-screen bg-black text-white overflow-auto">
-    <!-- CRT SCANLINES (тонкие, едва заметные) -->
+  <div class="relative w-full min-h-screen bg-black text-white overflow-auto"
+       :class="{ 'saturated': isWarmedUp }">
+    <!-- CRT SCANLINES -->
     <div class="absolute inset-0 pointer-events-none opacity-20"
          style="background: repeating-linear-gradient(to bottom, transparent, transparent 1px, rgba(0,0,0,0.15) 1px, rgba(0,0,0,0.15) 2px);"></div>
 
-    <!-- SUBTLE NOISE (зернистость) -->
+    <!-- SUBTLE NOISE -->
     <div class="absolute inset-0 pointer-events-none opacity-10"
          style="background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22><filter id=%22noise%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.7%22 numOctaves=%222%22 stitchTiles=%22stitch%22></feTurbulence></filter><rect width=%22100%%22 height=%22100%%22 filter=%22url(%23noise)%22></rect></svg>');"></div>
 
-    <!-- MAIN CONTENT -->
     <div class="p-4 md:p-6 font-retro max-w-4xl mx-auto relative z-10">
 
-      <h1 class="text-2xl md:text-3xl mb-6 text-cyan-300 text-center font-bold tracking-wide drop-shadow-[0_0_8px_rgba(0,255,255,0.4)]">
-        📼 Коллекция AssunaYuuki
-      </h1>
+      <!-- Заголовок + Живой архив -->
+      <div class="text-center mb-6">
+        <h1 class="text-2xl md:text-3xl mb-2 text-cyan-300 font-bold tracking-wide drop-shadow-[0_0_8px_rgba(0,255,255,0.4)]">
+          📼 Коллекция AssunaYuuki
+        </h1>
+        <div v-if="archiveMeta" class="text-xs text-gray-500 drop-shadow-[0_0_2px_rgba(0,0,0,0.8)]">
+           В коллекции: {{ archiveMeta.totalCassettes }} кассет •
+          Годы: {{ archiveMeta.yearRange || '—' }} •
+          Обновлено: {{ formatDate(archiveMeta.lastUpdated) }}
+        </div>
+      </div>
 
+      <!-- Вступление -->
       <div class="mb-6 p-4 bg-gray-900/60 rounded-lg border border-cyan-500/30 backdrop-blur-sm">
         <div class="flex items-start gap-3">
           <img src="/img/fennec.png" alt="AssunaYuuki" class="w-16 h-16 rounded-full border-2 border-pink-500 object-cover" />
@@ -141,7 +191,7 @@ const closeModal = () => {
 
       <div v-else-if="error" class="text-center text-red-400 py-12 drop-shadow-[0_0_6px_rgba(0,0,0,0.6)]">
         😿 {{ error }}<br />
-        <button @click="loadCassettes" class="mt-2 px-3 py-1 bg-red-900/40 text-white rounded text-sm hover:bg-red-800/50 font-retro">
+        <button @click="loadEverything" class="mt-2 px-3 py-1 bg-red-900/40 text-white rounded text-sm hover:bg-red-800/50 font-retro">
           Попробовать снова
         </button>
       </div>
@@ -150,7 +200,7 @@ const closeModal = () => {
         Ничего не найдено 😿<br />Попробуй изменить запрос или сбросить фильтры!
       </div>
 
-      <!-- Кассеты -->
+      <!-- Список кассет -->
       <div v-else>
         <TransitionGroup name="cassette" tag="div" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <button
@@ -271,10 +321,33 @@ const closeModal = () => {
 </template>
 
 <style scoped>
-/* Чистый ретро-моноширинный шрифт */
 .font-retro {
   font-family: 'Courier New', monospace;
   letter-spacing: 0.5px;
+}
+
+/* Эффект разогрева: плавное усиление насыщенности и свечения */
+.saturated {
+  --glow-cyan: 0 0 10px rgba(0, 255, 255, 0.6);
+  --glow-yellow: 0 0 8px rgba(255, 255, 0, 0.4);
+  --glow-pink: 0 0 8px rgba(255, 0, 255, 0.3);
+}
+.saturated h1,
+.saturated h2,
+.saturated h3 {
+  filter: saturate(1.2);
+}
+.saturated .text-cyan-200,
+.saturated .text-cyan-300 {
+  text-shadow: var(--glow-cyan);
+}
+.saturated .text-yellow-200,
+.saturated .text-yellow-300 {
+  text-shadow: var(--glow-yellow);
+}
+.saturated .text-pink-200,
+.saturated .text-pink-300 {
+  text-shadow: var(--glow-pink);
 }
 
 .cassette-enter-active {

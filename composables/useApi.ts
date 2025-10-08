@@ -9,13 +9,13 @@ export const useApi = () => {
         }
         headers.set('Content-Type', 'application/json');
 
+        // 🔥 УБРАЛ ПРОБЕЛЫ В КОНЦЕ!
         const res = await fetch('https://back.assunayuuki.ru' + url, {
             ...options,
             headers
         });
 
         if (res.status === 401) {
-            // Токен недействителен → выходим
             token.value = null;
             navigateTo('/admin/login');
             throw new Error('Сессия истекла');
