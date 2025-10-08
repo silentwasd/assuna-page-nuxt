@@ -1,7 +1,10 @@
 <!-- pages/admin/index.vue -->
 <script setup lang="ts">
-// definePageMeta({ middleware: 'auth' });
+import { ref, onMounted } from 'vue';
+import { useAuth } from '@/composables/useAuth';
+import { useApi } from '@/composables/useApi';
 
+// Определяем интерфейс для кассеты
 interface Cassette {
   id: number;
   title: string;
@@ -35,11 +38,13 @@ const currentCassette = ref<Cassette>({
 const showForm = ref(false);
 const { logout } = useAuth();
 
+// Загрузка кассет с сервера
 const loadCassettes = async () => {
   const { request } = useApi();
   cassettes.value = await request('/admin/cassettes');
 };
 
+// Сохранение кассеты (создание или обновление)
 const saveCassette = async () => {
   const { request } = useApi();
   if (currentCassette.value.id) {
@@ -57,11 +62,13 @@ const saveCassette = async () => {
   loadCassettes();
 };
 
+// Редактирование кассеты
 const editCassette = (cassette: Cassette) => {
   currentCassette.value = { ...cassette };
   showForm.value = true;
 };
 
+// Удаление кассеты
 const deleteCassette = async (id: number) => {
   if (!confirm('Удалить кассету? Это действие нельзя отменить.')) return;
   const { request } = useApi();
@@ -69,6 +76,7 @@ const deleteCassette = async (id: number) => {
   loadCassettes();
 };
 
+// Открытие формы для создания новой кассеты
 const openCreateForm = () => {
   currentCassette.value = {
     id: 0,
@@ -87,6 +95,7 @@ const openCreateForm = () => {
   showForm.value = true;
 };
 
+// Сброс формы
 const resetForm = () => {
   showForm.value = false;
   currentCassette.value = {
