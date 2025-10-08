@@ -285,4 +285,5 @@ const closeModal = () => {
   opacity: 0;
   transform: translateY(-10px) scale(0.98);
 }
+
 </style>
