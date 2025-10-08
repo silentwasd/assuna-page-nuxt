@@ -4,7 +4,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
 
     if (!token.value) {
         // Перенаправляем на логин с сообщением
-        return navigateTo('/admin/login' + encodeURIComponent(to.path), {
+        return navigateTo('/admin/login?redirect=' + encodeURIComponent(to.path), {
             replace: true
         });
     }
