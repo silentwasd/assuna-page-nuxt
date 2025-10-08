@@ -1,4 +1,3 @@
-// composables/useApi.ts
 const API_BASE = 'https://back.assunayuuki.ru';
 
 export const useApi = () => {
