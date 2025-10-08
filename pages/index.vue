@@ -9,7 +9,7 @@
   <!-- 📼 Новый компонент -->
   <DecoratorRgbBorder>
     <DecoratorOpacityBackground :opacity="0.8">
-      <BlockCassettes />
+      <BlockCassettes class="p-5 md:p-10" />
     </DecoratorOpacityBackground>
   </DecoratorRgbBorder>
 
