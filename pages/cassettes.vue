@@ -80,7 +80,6 @@ const loadEverything = async () => {
   error.value = null;
   await Promise.allSettled([loadCassettes(), loadArchiveMeta()]);
   loading.value = false;
-  // Эффект "разогрева" через 800 мс
   setTimeout(() => {
     isWarmedUp.value = true;
   }, 800);
@@ -117,6 +116,20 @@ const closeModal = () => {
   showModal.value = false;
   selectedCassette.value = null;
 };
+
+// Функция для форматирования текста с переносами строк в html с <br>
+const formatTextWithLineBreaks = (text: string | null | undefined) => {
+  if (!text) return '';
+  return text.replace(/\n/g, '<br>');
+};
+
+// Форматированные тексты для вывода в HTML с переносами
+const formattedDescription = computed(() => formatTextWithLineBreaks(selectedCassette.value?.description));
+const formattedSpecs = computed(() => formatTextWithLineBreaks(selectedCassette.value?.specs));
+const formattedFeatures = computed(() => formatTextWithLineBreaks(selectedCassette.value?.features));
+const formattedPopularity = computed(() => formatTextWithLineBreaks(selectedCassette.value?.popularity));
+const formattedFunFact = computed(() => formatTextWithLineBreaks(selectedCassette.value?.funFact));
+const formattedHowToSpot = computed(() => formatTextWithLineBreaks(selectedCassette.value?.howToSpotOriginal));
 </script>
 
 <template>
@@ -138,7 +151,7 @@ const closeModal = () => {
           📼 Коллекция AssunaYuuki
         </h1>
         <div v-if="archiveMeta" class="text-xs text-gray-500 drop-shadow-[0_0_2px_rgba(0,0,0,0.8)]">
-           В коллекции: {{ archiveMeta.totalCassettes }} кассет •
+          В коллекции: {{ archiveMeta.totalCassettes }} кассет •
           Годы: {{ archiveMeta.yearRange || '—' }} •
           Обновлено: {{ formatDate(archiveMeta.lastUpdated) }}
         </div>
@@ -273,39 +286,27 @@ const closeModal = () => {
               <div class="px-5 pb-6 space-y-4">
                 <div v-if="selectedCassette.description" class="p-3 rounded border border-gray-700/40 bg-gray-900/40">
                   <h3 class="font-retro text-xs mb-1 text-gray-300">📖 Описание</h3>
-                  <p class="text-sm text-gray-200 leading-relaxed">
-                    {{ selectedCassette.description }}
-                  </p>
+                  <p class="text-sm text-gray-200 leading-relaxed" v-html="formattedDescription"></p>
                 </div>
                 <div v-if="selectedCassette.specs" class="p-3 rounded border border-cyan-600/30 bg-cyan-900/10">
                   <h3 class="font-retro text-xs mb-1 text-cyan-300">📼 Основные характеристики</h3>
-                  <p class="text-sm text-cyan-100 leading-relaxed">
-                    {{ selectedCassette.specs }}
-                  </p>
+                  <p class="text-sm text-cyan-100 leading-relaxed" v-html="formattedSpecs"></p>
                 </div>
                 <div v-if="selectedCassette.features" class="p-3 rounded border border-yellow-600/30 bg-yellow-900/10">
                   <h3 class="font-retro text-xs mb-1 text-yellow-300">✨ Особенности</h3>
-                  <p class="text-sm text-yellow-100 leading-relaxed">
-                    {{ selectedCassette.features }}
-                  </p>
+                  <p class="text-sm text-yellow-100 leading-relaxed" v-html="formattedFeatures"></p>
                 </div>
                 <div v-if="selectedCassette.popularity" class="p-3 rounded border border-pink-600/30 bg-pink-900/10">
                   <h3 class="font-retro text-xs mb-1 text-pink-300">🔥 Почему популярна?</h3>
-                  <p class="text-sm text-pink-100 leading-relaxed">
-                    {{ selectedCassette.popularity }}
-                  </p>
+                  <p class="text-sm text-pink-100 leading-relaxed" v-html="formattedPopularity"></p>
                 </div>
                 <div v-if="selectedCassette.funFact" class="p-3 rounded border border-green-600/30 bg-green-900/10">
                   <h3 class="font-retro text-xs mb-1 text-green-300">❓ Интересный факт</h3>
-                  <p class="text-sm text-green-100 leading-relaxed">
-                    {{ selectedCassette.funFact }}
-                  </p>
+                  <p class="text-sm text-green-100 leading-relaxed" v-html="formattedFunFact"></p>
                 </div>
                 <div v-if="selectedCassette.howToSpotOriginal" class="p-3 rounded border border-purple-600/30 bg-purple-900/10">
                   <h3 class="font-retro text-xs mb-1 text-purple-300">🔍 Как распознать оригинал?</h3>
-                  <p class="text-sm text-purple-100 leading-relaxed">
-                    {{ selectedCassette.howToSpotOriginal }}
-                  </p>
+                  <p class="text-sm text-purple-100 leading-relaxed" v-html="formattedHowToSpot"></p>
                 </div>
                 <div class="pt-4 text-center text-gray-600 text-xs drop-shadow-[0_0_2px_rgba(0,0,0,0.8)]">
                   📼 Коллекция AssunaYuuki • 900 лет в поисках красоты
