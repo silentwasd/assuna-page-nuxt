@@ -3,7 +3,9 @@
 import { ref, onMounted } from 'vue';
 import { useAuth } from '@/composables/useAuth';
 import { useApi } from '@/composables/useApi';
-
+definePageMeta({
+  middleware: 'auth' // ← защищена
+});
 // Определяем интерфейс для кассеты
 interface Cassette {
   id: number;

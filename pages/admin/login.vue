@@ -5,6 +5,10 @@ const password = ref('');
 const loading = ref(false);
 const error = ref('');
 const { login } = useAuth();
+definePageMeta({
+  middleware: 'guest' // ← только для неавторизованных
+});
+
 
 const handleLogin = async () => {
   loading.value = true;
