@@ -141,6 +141,29 @@ const resetForm = () => {
   };
 };
 
+// Функция разбора specs в пары ключ-значение
+const parseSpecs = (specs: string): { key: string; value: string }[] => {
+  if (!specs) return [];
+  return specs
+      .split('\n')
+      .map(line => line.trim())
+      .filter(line => line.length > 0)
+      .map(line => {
+        const separatorIndex = line.indexOf(':');
+        const sepIndexAlt = line.indexOf(';');
+        const splitIndex = separatorIndex >= 0 ? separatorIndex : sepIndexAlt;
+
+        if (splitIndex === -1) {
+          return { key: line, value: '' };
+        } else {
+          return {
+            key: line.slice(0, splitIndex).trim(),
+            value: line.slice(splitIndex + 1).trim()
+          };
+        }
+      });
+};
+
 onMounted(loadCassettes);
 </script>
 
@@ -248,6 +271,14 @@ onMounted(loadCassettes);
                 placeholder="Основные характеристики (тип ленты, уровень шума...)"
                 class="w-full p-3 bg-gray-900 border border-cyan-600 rounded text-cyan-100 placeholder:text-cyan-500/60 focus:outline-none focus:ring-1 focus:ring-cyan-500"
             ></textarea>
+
+            <!-- Визуальное представление specs в две колонки -->
+            <div v-if="currentCassette.specs" class="mt-2 grid grid-cols-2 gap-x-6 gap-y-1 text-cyan-200 text-sm font-mono">
+              <template v-for="(item, index) in parseSpecs(currentCassette.specs)" :key="index">
+                <div class="font-semibold">{{ item.key }}</div>
+                <div class="break-words">{{ item.value }}</div>
+              </template>
+            </div>
 
             <textarea
                 v-model="currentCassette.features"
